@@ -1,8 +1,15 @@
 const express = require('express');
 const fetch = require('node-fetch');
+const cors = require('cors');
 const app = express();
 
+// Accepter toutes les origines (pour le développement)
+app.use(cors());
 app.use(express.json());
+
+app.get('/', (req, res) => {
+    res.send('Relais BusEye opérationnel avec CORS');
+});
 
 app.post('/api/position', async (req, res) => {
     const { busId, lat, lng, speed } = req.body;
@@ -30,10 +37,6 @@ app.post('/api/position', async (req, res) => {
         console.error(err);
         res.status(500).json({ error: err.message });
     }
-});
-
-app.get('/', (req, res) => {
-    res.send('Relais BusEye opérationnel');
 });
 
 const port = process.env.PORT || 3000;
